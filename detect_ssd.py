@@ -4,8 +4,11 @@ import time
 import sys
 import logging
 
+
+SSD_PATH = "frozen_inference_graph.pb"
+
 def load_ssd():
-  return cv.dnn.readNetFromTensorflow("frozen_inference_graph.pb", "ssd_mobilenet_v1_coco.pbtxt")
+  return cv.dnn.readNetFromTensorflow(SSD_PATH, "ssd_mobilenet_v1_coco.pbtxt")
 
 
 def detect_ssd(ssd, img, min_area_k = 0.001, thr = 0.3):
@@ -15,7 +18,8 @@ def detect_ssd(ssd, img, min_area_k = 0.001, thr = 0.3):
   cols = img.shape[1]
   r = np.array([cols, rows, cols, rows])
 
-  ret = []
+  boxes = []
+  scores = []
   for d in out[0,0,:,:]:
     score = float(d[2])
     cls = int(d[1])
@@ -31,7 +35,11 @@ def detect_ssd(ssd, img, min_area_k = 0.001, thr = 0.3):
     box = d[3:7] * r
     box[2] -= box[0]
     box[3] -= box[1]
-    ret.append(box.astype("int"))
-  return ret
+    boxes.append(box.astype("int"))
+    scores.append(score)
+
+  dxs = cv.dnn.NMSBoxes(boxes, scores, 0.3, 0.1)
+  return [boxes[i] for i in dxs.flatten()]
+
 
 
