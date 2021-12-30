@@ -19,11 +19,11 @@ def yolo_detect_pic(ynn, img, min_area_k=0.001, min_score=0.1):
 
   ynn.setInput(cv.dnn.blobFromImage(img, 1.0/255.0, (416, 416), swapRB=True, crop=False))
 
-  ln = ynn.getLayerNames()
+  #ln = ynn.getLayerNames()
 
-  ln = [ln[i[0] - 1] for i in ynn.getUnconnectedOutLayers()]
+  #ln = [ln[i[0] - 1] for i in ynn.getUnconnectedOutLayers()]
 
-  yout = ynn.forward(ln)
+  yout = ynn.forward(ynn.getUnconnectedOutLayersNames())
 
   boxes = []
   scores = []

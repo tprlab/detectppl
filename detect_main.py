@@ -9,6 +9,7 @@ import detect_yolo
 import detect_ssd
 import detect_hog
 import detect_haar
+import detect_yolo5
 
 
 def run_detect(args):
@@ -21,7 +22,8 @@ def run_detect(args):
   IMPLS = []
 
 
-  IMPLS.append([detect_yolo.load_yolo(), detect_yolo.yolo_detect_pic, "yolo"])
+  #IMPLS.append([detect_yolo5.load_yolo5(), detect_yolo5.yolo_detect_pic, "yolo5"])
+  IMPLS.append([detect_yolo.load_yolo(), detect_yolo.yolo_detect_pic, "yolo4"])
   IMPLS.append([detect_yolo.load_tiny_yolo(), detect_yolo.yolo_detect_pic, "tiny_yolo"])
   IMPLS.append([detect_ssd.load_ssd(), detect_ssd.detect_ssd, "ssd"])
   IMPLS.append([detect_hog.init(), detect_hog.detect, "hog"])
